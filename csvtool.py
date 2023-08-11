@@ -69,7 +69,7 @@ class Version:
         return f'{self.major}.{self.minor}.{self.patch}'
 
 
-version = Version(0, 5, 0)
+version = Version(0, 6, 0)
 
 
 def eprint(*args, **kwargs):
@@ -357,6 +357,11 @@ if __name__ == '__main__':
 
     if args.input == '-':
         args.input = '/proc/self/fd/0'
+
+    if args.input == args.output:
+        logger.error('input and output files must be different')
+        sys.exit(1)
+
     if args.named is False:
         args.columns = [int(i) for i in args.columns]
 
