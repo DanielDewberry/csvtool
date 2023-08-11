@@ -212,7 +212,7 @@ def test_version_major():
 
 def test_version_minor():
     """Test the application version:minor."""
-    assert version.minor == 3
+    assert version.minor == 4
 
 
 def test_version_patch():

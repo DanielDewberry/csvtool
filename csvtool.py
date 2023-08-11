@@ -69,7 +69,7 @@ class Version:
         return f'{self.major}.{self.minor}.{self.patch}'
 
 
-version = Version(0, 3, 0)
+version = Version(0, 4, 0)
 
 
 def eprint(*args, **kwargs):
@@ -217,7 +217,7 @@ def argparser_factory() -> argparse.ArgumentParser():
     """Create a default argument parser for the application."""
     parser = argparse.ArgumentParser(prog='csvtool',
                                      description='csv file manipulation tool',
-                                     epilog=f'Version {version.major}.{version.minor}.{version.patch}')
+                                     epilog=f'Version {str(version)}')
     parser.add_argument('--input',
                         default='/proc/self/fd/0',
                         help='input file (default stdin)')
