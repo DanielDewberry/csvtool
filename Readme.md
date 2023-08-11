@@ -2,6 +2,14 @@
 
 Reshape a CSV file.
 
+## Installation
+
+```bash
+chown "${USER}:${USER}" csvtool.py
+chmod 755 csvtool.py
+cp csvtool.py ~/.local/bin/csvtool
+```
+
 
 ## Usage
 
@@ -12,7 +20,7 @@ Selections and Projections indexes are zero-based.
 ### Print a projection of column numbers
 
 ```bash
-./csvtool.py 0 1 2 < ~/Downloads/mm23.csv 
+./csvtool 0 1 2 < ~/Downloads/mm23.csv
 ```
 
 
@@ -21,7 +29,7 @@ Selections and Projections indexes are zero-based.
 csvtool reads from stdin by default, but can be instructed to open a file for reading
 
 ```bash
-./csvtool.py --input ~/Downloads/mm23.csv 0 1 2
+./csvtool --input ~/Downloads/mm23.csv 0 1 2
 ```
 
 
@@ -30,7 +38,7 @@ csvtool reads from stdin by default, but can be instructed to open a file for re
 csvtool writes to stdout by default, but can be instructed to open a file for writing:
 
 ```bash
-./csvtool.py \
+./csvtool \
     --input ~/Downloads/mm23.csv \
     --output ~/Downloads/mm23-processed.csv \
     0 1 2
@@ -42,7 +50,7 @@ csvtool writes to stdout by default, but can be instructed to open a file for wr
 Instruct csvtool to use column names from the first post-filter row
 
 ```bash
-./csvtool.py \
+./csvtool \
     --input ~/Downloads/mm23.csv \
     --output ~/Downloads/mm23-processed.csv \
     --named \
@@ -53,7 +61,7 @@ Instruct csvtool to use column names from the first post-filter row
 ### Rename the output columns
 
 ```bash
-./csvtool.py \
+./csvtool \
     --input ~/Downloads/mm23.csv \
     --output ~/Downloads/mm23-processed.csv \
     --named \
@@ -65,7 +73,7 @@ Instruct csvtool to use column names from the first post-filter row
 ### Suppress headers
 
 ```bash
-./csvtool.py \
+./csvtool \
     --input ~/Downloads/mm23.csv \
     --output ~/Downloads/mm23-processed.csv \
     --named \
@@ -77,7 +85,7 @@ Instruct csvtool to use column names from the first post-filter row
 ### Filter records
 
 ```bash
-./csvtool.py \
+./csvtool \
     --input ~/Downloads/mm23.csv \
     --output ~/Downloads/mm23-processed.csv \
     --named \
@@ -90,7 +98,7 @@ Instruct csvtool to use column names from the first post-filter row
 ### Invert the record filter
 
 ```bash
-./csvtool.py \
+./csvtool \
     --input ~/Downloads/mm23.csv \
     --output ~/Downloads/mm23-processed.csv \
     --named \
@@ -108,7 +116,7 @@ Example [data source](https://www.ons.gov.uk/file?uri=%2Feconomy%2Finflationandp
 
 
 ```bash
-./csvtool.py \
+./csvtool \
     --input ~/Downloads/mm23.csv \
     --named \
     'Title' \
@@ -147,7 +155,7 @@ create unlogged table loadtable8c(
 ```
 
 ```bash
-./csvtool.py \
+./csvtool \
     --input ~/Downloads/mm23.csv \
     --named \
     'Title' \
