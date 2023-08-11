@@ -213,6 +213,7 @@ def main(*,
 
         headers = next(reader)
         header_length = len(headers)
+        logger.info('Header has %s columns', header_length)
         histogram = {}
         histogram[header_length] = header_length
 
