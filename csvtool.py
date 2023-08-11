@@ -188,6 +188,10 @@ def argparser_factory() -> argparse.ArgumentParser():
                         help='Logging level',
                         choices=['debug', 'info', 'warning', 'error', 'critical', 'exception'],
                         default='warning')
+    parser.add_argument('--log-root',
+                        help='Attach the logging handler to the root logger instead of the application logger (default False)',  # NoQA: E501
+                        default=False,
+                        action='store_true')
     return parser
 
 
@@ -283,7 +287,11 @@ if __name__ == '__main__':
     logger.setLevel(logging_level)
     ch.setLevel(logging_level)
 
-    logger.addHandler(ch)
+    if args.log_root is True:
+        logging.getLogger('').addHandler(ch)
+    else:
+        logger.addHandler(ch)
+
     if args.input == '-':
         args.input = '/proc/self/fd/0'
     if args.named is False:
