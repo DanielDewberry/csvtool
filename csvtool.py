@@ -8,8 +8,12 @@ import csv
 import logging
 import operator
 import sys
+from collections import namedtuple
 from itertools import chain
 from typing import List
+
+Version = namedtuple('version', ['major', 'minor', 'patch'])
+version = Version(0, 1, 0)
 
 
 def eprint(*args, **kwargs):

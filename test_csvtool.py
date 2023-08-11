@@ -9,6 +9,7 @@ from csvtool import (
     RangeIterator,
     log_level_from_string,
     range_normalizer,
+    version,
 )
 
 import pytest
@@ -116,3 +117,18 @@ def test_log_level_from_string_case_insensitive__invalid(test_input):
     """Test a variety of valid inputs to log_level_from_string."""
     with pytest.raises(ValueError):
         assert log_level_from_string(test_input)
+
+
+def test_version_major():
+    """Test the application version:major."""
+    assert version.major == 0
+
+
+def test_version_minor():
+    """Test the application version:minor."""
+    assert version.minor == 1
+
+
+def test_version_patch():
+    """Test the application version:patch."""
+    assert version.patch == 0
