@@ -3,7 +3,13 @@
 
 """Test suite for csvtool."""
 
-from csvtool import RangeIterator, range_normalizer
+import logging
+
+from csvtool import (
+    RangeIterator,
+    log_level_from_string,
+    range_normalizer,
+)
 
 import pytest
 
@@ -68,3 +74,45 @@ def test_range_filter(test_input, expected):
 # | - | 10  |
 # | - | ... |
 # | - | ... |
+
+
+@pytest.mark.parametrize('test_input,expected',
+                         [('debug', logging.DEBUG),
+                          ('info', logging.INFO),
+                          ('warning', logging.WARNING),
+                          ('error', logging.ERROR),
+                          ('critical', logging.CRITICAL),
+                          ])
+def test_log_level_from_string_case_sensitive__valid(test_input, expected):
+    """Test a variety of valid inputs to log_level_from_string."""
+    assert log_level_from_string(test_input) == expected
+
+
+@pytest.mark.parametrize('test_input,expected',
+                         [('Debug', logging.DEBUG),
+                          ('iNfo', logging.INFO),
+                          ('waRning', logging.WARNING),
+                          ('errOr', logging.ERROR),
+                          ('critIcal', logging.CRITICAL),
+                          ])
+def test_log_level_from_string_case_insensitive__valid(test_input, expected):
+    """Test a variety of valid inputs to log_level_from_string."""
+    assert log_level_from_string(test_input) == expected
+
+
+@pytest.mark.parametrize('test_input',
+                         [('nonsense'),
+                          ])
+def test_log_level_from_string_case_sensitive__invalid(test_input):
+    """Test a variety of valid inputs to log_level_from_string."""
+    with pytest.raises(ValueError):
+        assert log_level_from_string(test_input)
+
+
+@pytest.mark.parametrize('test_input',
+                         [('Nonsense'),
+                          ])
+def test_log_level_from_string_case_insensitive__invalid(test_input):
+    """Test a variety of valid inputs to log_level_from_string."""
+    with pytest.raises(ValueError):
+        assert log_level_from_string(test_input)

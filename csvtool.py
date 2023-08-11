@@ -184,7 +184,10 @@ def argparser_factory() -> argparse.ArgumentParser():
                         help='do not print the data header (default False)',
                         default=False,
                         action='store_true')
-
+    parser.add_argument('--log-level', '-L',
+                        help='Logging level',
+                        choices=['debug', 'info', 'warning', 'error', 'critical', 'exception'],
+                        default='warning')
     return parser
 
 
@@ -251,17 +254,36 @@ def main(*,
         logger.warn('Line size histogram shows there were %s line lengths', len(histogram))
 
 
+def log_level_from_string(level_string: str, ignore_case: bool = False) -> int:
+    """Convert a logging level from a string to the corresponding int."""
+    level_string = level_string.lower()
+    if level_string == 'debug':
+        return logging.DEBUG
+    elif level_string == 'info':
+        return logging.INFO
+    elif level_string == 'warning':
+        return logging.WARNING
+    elif level_string == 'error':
+        return logging.ERROR
+    elif level_string == 'critical':
+        return logging.CRITICAL
+    raise ValueError('Unknown logging level')
+
+
 if __name__ == '__main__':
     logger = logging.getLogger('csv-tool')
-    logger.setLevel(logging.WARNING)
     fmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(fmt)
-    logger.addHandler(ch)
 
     parser = argparser_factory()
     args = parser.parse_args()
+
+    ch = logging.StreamHandler()
+    ch.setFormatter(fmt)
+    logging_level = log_level_from_string(args.log_level)
+    logger.setLevel(logging_level)
+    ch.setLevel(logging_level)
+
+    logger.addHandler(ch)
     if args.input == '-':
         args.input = '/proc/self/fd/0'
     if args.named is False:
