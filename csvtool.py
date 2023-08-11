@@ -69,7 +69,7 @@ class Version:
         return f'{self.major}.{self.minor}.{self.patch}'
 
 
-version = Version(0, 4, 0)
+version = Version(0, 5, 0)
 
 
 def eprint(*args, **kwargs):
@@ -339,7 +339,7 @@ def log_level_from_string(level_string: str, ignore_case: bool = False) -> int:
 
 if __name__ == '__main__':
     logger = logging.getLogger('csv-tool')
-    fmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    fmt = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     parser = argparser_factory()
     args = parser.parse_args()
