@@ -312,7 +312,11 @@ if __name__ == '__main__':
              row_filter=args.filter,
              filter_inversion=args.invert_filter,
              print_header=not args.no_print_header)
+        exit_code = 0
     except BrokenPipeError:
-        sys.exit(0)
+        exit_code = 0
+    except BaseException:
+        logger.exception('Unhandled execption causing abort. Recommend you set --log-level=debug and check the verbose output for clues')  # NoQA: E501
+        exit_code = 1
 
-    sys.exit(0)
+    sys.exit(exit_code)
