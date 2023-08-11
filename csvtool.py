@@ -8,12 +8,68 @@ import csv
 import logging
 import operator
 import sys
-from collections import namedtuple
 from itertools import chain
 from typing import List
 
-Version = namedtuple('version', ['major', 'minor', 'patch'])
-version = Version(0, 2, 0)
+
+class Version:
+    """Semantic version."""
+
+    def __init__(self, major, minor, patch):
+        """Initialize."""
+        self._major = major
+        self._minor = minor
+        self._patch = patch
+
+    @property
+    def major(self) -> int:
+        """Return major version."""
+        return self._major
+
+    @property
+    def minor(self) -> int:
+        """Return minor version."""
+        return self._minor
+
+    @property
+    def patch(self) -> int:
+        """Return patch version."""
+        return self._patch
+
+    @property
+    def to_integral(self, base=1000):
+        """Convert version to an integer, using the base value as a multiplier.
+
+        result = major * base**2 + minor*base + patch
+        """
+        return self.major * 1000**2 + self.minor*1000 + self.patch
+
+    def __eq__(self, other) -> bool:
+        """Return equality comparison."""
+        return self.to_integral == other.to_integral
+
+    def __lt__(self, other) -> bool:
+        """Return less-than comparison."""
+        return self.to_integral < other.to_integral
+
+    def __gt__(self, other) -> bool:
+        """Return greater-than comparison."""
+        return self.to_integral > other.to_integral
+
+    def __le__(self, other) -> bool:
+        """Return less-than-or-equal comparison."""
+        return self.to_integral <= other.to_integral
+
+    def __ge__(self, other) -> bool:
+        """Return greater-than-or-equal comparison."""
+        return self.to_integral >= other.to_integral
+
+    def __str__(self):
+        """Return string render."""
+        return f'{self.major}.{self.minor}.{self.patch}'
+
+
+version = Version(0, 3, 0)
 
 
 def eprint(*args, **kwargs):

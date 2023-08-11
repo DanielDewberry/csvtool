@@ -4,9 +4,11 @@
 """Test suite for csvtool."""
 
 import logging
+import operator
 
 from csvtool import (
     RangeIterator,
+    Version,
     log_level_from_string,
     range_normalizer,
     version,
@@ -119,6 +121,90 @@ def test_log_level_from_string_case_insensitive__invalid(test_input):
         assert log_level_from_string(test_input)
 
 
+@pytest.mark.parametrize('test_input',
+                         [(0, 0, 0),
+                          (1, 0, 0),
+                          (0, 1, 0),
+                          (0, 0, 1),
+                          ])
+def test_version_class_inputs(test_input):
+    """Test the Version object constructs and the members are accessible."""
+    version = Version(*test_input)
+    assert version.major == test_input[0]
+    assert version.minor == test_input[1]
+    assert version.patch == test_input[2]
+
+
+def generate_paramtrized_data(op):
+    """Generate a tuple of two integer-tripplets and an operator comparison result."""
+    tests = []
+    base = 10000
+    r = 2
+    for i1 in range(r):
+        for i2 in range(r):
+            for i3 in range(r):
+                for i4 in range(r):
+                    for i5 in range(r):
+                        for i6 in range(r):
+                            a = i1 * base**2 + i2 * base + i3
+                            b = i4 * base**2 + i5 * base + i6
+                            tests.append(((i1, i2, i3), (i4, i5, i6), op(a, b)))
+    return tests
+
+
+@pytest.mark.parametrize('test_input1,test_input2,expected',
+                         generate_paramtrized_data(operator.eq))
+def test_version_class_eq(test_input1, test_input2, expected):
+    """Test Version equality operator."""
+    version_lhs = Version(*test_input1)
+    version_rhs = Version(*test_input2)
+    assert (version_lhs == version_rhs) is expected
+
+
+@pytest.mark.parametrize('test_input1,test_input2,expected',
+                         generate_paramtrized_data(operator.lt))
+def test_version_class_lt(test_input1, test_input2, expected):
+    """Test Version less than operator."""
+    version_lhs = Version(*test_input1)
+    version_rhs = Version(*test_input2)
+    assert (version_lhs < version_rhs) is expected
+
+
+@pytest.mark.parametrize('test_input1,test_input2,expected',
+                         generate_paramtrized_data(operator.gt))
+def test_version_class_gt(test_input1, test_input2, expected):
+    """Test Version greater than operator."""
+    version_lhs = Version(*test_input1)
+    version_rhs = Version(*test_input2)
+    assert (version_lhs > version_rhs) is expected
+
+
+@pytest.mark.parametrize('test_input1,test_input2,expected',
+                         generate_paramtrized_data(operator.le))
+def test_version_class_le(test_input1, test_input2, expected):
+    """Test Version less than or equal operator."""
+    version_lhs = Version(*test_input1)
+    version_rhs = Version(*test_input2)
+    assert (version_lhs <= version_rhs) is expected
+
+
+@pytest.mark.parametrize('test_input1,test_input2,expected',
+                         generate_paramtrized_data(operator.ge))
+def test_version_class_ge(test_input1, test_input2, expected):
+    """Test Version greater than or equal operator."""
+    version_lhs = Version(*test_input1)
+    version_rhs = Version(*test_input2)
+    assert (version_lhs >= version_rhs) is expected
+
+
+@pytest.mark.parametrize('test_input,expected',
+                         [((0, 0, 0), '0.0.0'),
+                          ])
+def test_version_class_str(test_input, expected):
+    """Test str(Version) yields correct result."""
+    assert str(Version(*test_input)) == expected
+
+
 def test_version_major():
     """Test the application version:major."""
     assert version.major == 0
@@ -126,7 +212,7 @@ def test_version_major():
 
 def test_version_minor():
     """Test the application version:minor."""
-    assert version.minor == 2
+    assert version.minor == 3
 
 
 def test_version_patch():
